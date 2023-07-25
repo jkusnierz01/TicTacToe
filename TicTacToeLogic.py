@@ -43,7 +43,7 @@ class Node:
 
 
     # metoda w ktorej opisane sa wszystkie warunki zwycieztwa dla planszy 3x3
-    def Terminal(self):
+    def Terminal(self, dd = 5):
         winning = 4
         tmp = 0
         char_list_row = []
@@ -75,17 +75,33 @@ class Node:
         # to bylo sprawdzenie czy zwyciestwo kolka czy krzyzyka po ruchu w tej samej kolumnie albo wierszu
 
         #sprawdzenie przekatnych
-        char_list_one.append(self.gameboard[row][col])
-        char_list_two.append(self.gameboard[row][col])
-        for x in range(1,5):
-            if self.IsInTable(row - x, col - x):
-                char_list_one.append(self.gameboard[row-x][col-x])
-            if self.IsInTable(row + x, col + x):
-                char_list_one.append(self.gameboard[row + x][col + x])
-            if self.IsInTable(row - x, col + x):
-                char_list_two.append(self.gameboard[row-x][col+x])
-            if self.IsInTable(row + x, col - x):
-                char_list_two.append(self.gameboard[row + x][col - x])
+        row_tmp = row
+        col_tmp = col
+        while self.IsInTable(row_tmp - 1, col_tmp - 1):
+            row_tmp = row_tmp - 1
+            col_tmp = col_tmp - 1
+        while self.IsInTable(row_tmp, col_tmp):
+            char_list_one.append(self.gameboard[row_tmp][col_tmp])
+            row_tmp = row_tmp + 1
+            col_tmp = col_tmp + 1
+        row_tmp = row
+        col_tmp = col
+        while self.IsInTable(row_tmp-1, col_tmp+1):
+            row_tmp = row_tmp - 1
+            col_tmp = col_tmp + 1
+        while self.IsInTable(row_tmp, col_tmp):
+            char_list_two.append(self.gameboard[row_tmp][col_tmp])
+            row_tmp = row_tmp + 1
+            col_tmp = col_tmp - 1
+        # for x in range(1, 5):
+        #     if self.IsInTable(row - x, col - x):
+        #         char_list_one.append(self.gameboard[row-x][col-x])
+        #     if self.IsInTable(row + x, col + x):
+        #         char_list_one.append(self.gameboard[row + x][col + x])
+        #     if self.IsInTable(row - x, col + x):
+        #         char_list_two.append(self.gameboard[row-x][col+x])
+        #     if self.IsInTable(row + x, col - x):
+        #         char_list_two.append(self.gameboard[row + x][col - x])
         if char_list_one.count(CROSS) >= winning:
             if checkk_numbers(char_list_one):
                 self.gamescore = CROSS
@@ -102,6 +118,9 @@ class Node:
             if checkk_numbers(char_list_two):
                 self.gamescore = DOT
                 return True
+        if dd==4:
+            print(char_list_one)
+            print(char_list_two)
         if self.isEnd():
             self.gamescore=0
             return True
