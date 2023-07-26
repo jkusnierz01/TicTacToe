@@ -93,15 +93,6 @@ class Node:
             char_list_two.append(self.gameboard[row_tmp][col_tmp])
             row_tmp = row_tmp + 1
             col_tmp = col_tmp - 1
-        # for x in range(1, 5):
-        #     if self.IsInTable(row - x, col - x):
-        #         char_list_one.append(self.gameboard[row-x][col-x])
-        #     if self.IsInTable(row + x, col + x):
-        #         char_list_one.append(self.gameboard[row + x][col + x])
-        #     if self.IsInTable(row - x, col + x):
-        #         char_list_two.append(self.gameboard[row-x][col+x])
-        #     if self.IsInTable(row + x, col - x):
-        #         char_list_two.append(self.gameboard[row + x][col - x])
         if char_list_one.count(CROSS) >= winning:
             if checkk_numbers(char_list_one):
                 self.gamescore = CROSS
