@@ -102,20 +102,51 @@ class Player:
     mark: str  # 'x' or 'o'
 
 class HumanPlayer(Player):
+    # klasa powinna zawierać metody odnoszące się do gracza - takie jak make move, który obecnie istnieje
+    # dla klasy board z niewiadomych przyczyn
     pass
 
-
+# we want ComputerPlayer's mark to be 'o'
 class ComputerPlayer(Player):
 
-    def minimax(self, board, player_one):
-        player = self.mark
-        if board.winner() == True:
-            return board.cords
-        if player == self.mark:
+    # we hand over 2 arguments:
+    #   - actual board
+    #   - and minimax player's mark
+    def minimax(self, board, player_mark, depth):
+        value_list = list()
+        mark = player_mark
+        # trzeba stworzyć liste indeksów z wszystkimi możliwymi ruchami
+        possible_moves = [index for elem, index in enumerate(board.board) if elem == ' ']
+        if board.winner(mark):
+            if mark == 'o':
+                return -1
+            else:
+                return 1
+        if depth == 0 or possible_moves == []:
+            return 0
+        if mark == self.mark:  # this player wants to minimalize the value - ComputerPlayer
             value = 1000
-            player = player_one.mark
-            possible_moves = [index for elem, index in enumerate(self.board) if elem == ' '] # trzeba stworzyć liste indeksów z wszystkimi możliwymi ruchami
-
+            player = player_mark
+            for move in possible_moves:
+                board.board[move] = player
+                current_value = self.minimax(board, player, depth - 1)
+                board.board[move] = ' '
+                value_list.append(current_value)
+                value = min(value, current_value)
+        if mark == player_mark:  # this player wants to maximize the value
+            value = -1000
+            player = self.mark
+            for move in possible_moves:
+                board.board[move] = player
+                current_value = self.minimax(board, player)
+                board.board[move] = ' '
+                value_list.append(current_value)
+                value = max(value, current_value)
+        index = value_list.index(value)
+        return value_list[index]
+            # nie jestem pewny czy nie powinniśmy mieć możliwości przypisania wartości dla konkretnego ruchu
+            # mam na myśli że po przejściu przez wszystkie możliwości chcemyu wybrać ten który min/max wartość
+            # ale skądś musimy wiedzieć który to ruch - dla danego ruchu powinne być przypisane wartości?
 
 
 
