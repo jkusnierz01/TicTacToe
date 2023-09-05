@@ -28,11 +28,11 @@ class Board:
         print("\n")
         print('\t' + " " + '0' + "   " + '1' + "   " + '2')
         for z in range(3):
-            print('      ' + str(z) + "  " + self.board[3*z] + " | " + self.board[3*z+1] + " | " + self.board[3*z+2])
+            print('      ' + str(z) + "  " + self.board[3 * z] + " | " + self.board[3 * z + 1] + " | " + self.board[
+                3 * z + 2])
             if z < 2:
                 print('\t' + "-----------")
         print("\n" + '\n')
-
 
     def prepare_move(self):
         self.cords[0] = input("Pass row in which you want to place your mark (0-2): ")
@@ -44,9 +44,6 @@ class Board:
         else:
             return True
 
-
-
-    # musimy przekazywać letter - czyli literke która jest gracz
     def winner(self, mark):
         row_indexes = [(3 * self.cords[0]) + y for y in range(3)]  # list of row indexes
         col_indexes = [3 * y + self.cords[1] for y in range(3)]  # list of column indexes
@@ -67,7 +64,6 @@ class Board:
         else:
             return False
 
-
     def make_move(self, mark):
         while self.prepare_move():
             index = int(self.cords[0] * 3 + self.cords[1])
@@ -87,8 +83,7 @@ class Board:
                 number = number + 1
         return number
 
-
-    def game(self, player_one,player_two):
+    def game(self, player_one, player_two):
         self.print_board()
         while True:
             move_index = player_one.check_move(self)
@@ -111,18 +106,10 @@ class Board:
                 return True
 
 
-
-
-
-
-
-
-
-
-
 @dataclass
 class Player:
     mark: str  # 'x' or 'o'
+
 
 class HumanPlayer(Player):
 
@@ -144,6 +131,7 @@ class HumanPlayer(Player):
             except ValueError:
                 print("This spot is already used! Try again!")
         return index
+
 
 # we want ComputerPlayer's mark to be 'o'
 class ComputerPlayer(Player):
@@ -186,16 +174,9 @@ class ComputerPlayer(Player):
         index = value_list.index(value)
         best = {'position': possible_moves[index], 'score': value}
         return best
-#       - nie możemy tego w ten sposob zwracac bo przez to
-#                                       zamiast wyniku oceny danego boarda robi nam sie zwrotka konkretnego indeksu ruchy
-#       musimy znalezc sposob zeby normalnie zwracac wycene danego boarda i jednoczesnie pozniej przekazac najlepszy
-#       ruch dla ktorego dana wartosc zostala wyceniona
 
 
 board = Board()
 Human = HumanPlayer('x')
 Computer = ComputerPlayer('o')
 board.game(Human, Computer)
-
-
-
